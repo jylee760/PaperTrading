@@ -1,0 +1,150 @@
+[
+  {
+    "ContainingType": "PaperTradingApi.Controllers.PersonsController",
+    "Method": "CreateNewUser",
+    "RelativePath": "api/Persons",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "PaperTradingApi.Models.DTO.UserDetailsDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PaperTradingApi.Controllers.PersonsController",
+    "Method": "GetUser",
+    "RelativePath": "api/Persons/{name}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PaperTradingApi.Controllers.PersonsController",
+    "Method": "AddFunds",
+    "RelativePath": "api/Persons/addfunds/{user}",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "PaperTradingApi.Models.DTO.UserDetailsAddFundsDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PaperTradingApi.Controllers.PersonsController",
+    "Method": "GetAllStocks",
+    "RelativePath": "api/Persons/allstocks/{name}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PaperTradingApi.Controllers.PersonsController",
+    "Method": "CreateNewOrder",
+    "RelativePath": "api/Persons/create/{user}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "user",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "order",
+        "Type": "PaperTradingApi.Models.DTO.UserOrderDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PaperTradingApi.Controllers.PersonsController",
+    "Method": "GetUserOrderHistory",
+    "RelativePath": "api/Persons/history/{name}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PaperTradingApi.Controllers.PersonsController",
+    "Method": "GetUserOrder",
+    "RelativePath": "api/Persons/order/{name}/{timestamp}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "timestamp",
+        "Type": "System.DateTime",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PaperTradingApi.Controllers.PersonsController",
+    "Method": "GetUserStock",
+    "RelativePath": "api/Persons/stock/{name}/{stock}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "stock",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
