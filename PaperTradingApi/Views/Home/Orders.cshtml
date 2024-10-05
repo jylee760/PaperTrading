@@ -1,0 +1,34 @@
+﻿<div class="orders">
+	<div class="stockTable">
+		<table>
+			<thead>
+				<tr>
+					<th>Order Type</th>
+					<th>Stock Ticker</th>
+					<th>Amount</th>
+					<th>Price</th>
+					<th>Timestamp</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(var order in ViewBag.Orders)
+				{
+					<tr>
+						@if (order.OrderType.Equals("b"))
+						{
+							<td>Buy Order</td>
+						}
+						else
+						{
+							<td>Sell Order</td>
+						}
+						<td>@order.StockTicker</td>
+						<td>@order.Amount</td>
+						<td>@order.Price</td>
+						<td>@order.Timestamp</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>

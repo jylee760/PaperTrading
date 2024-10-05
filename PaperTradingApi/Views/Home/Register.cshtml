@@ -1,0 +1,26 @@
+﻿@model UserDetailsDTO
+@{
+	Layout = null;
+}
+<h2 class="loginTitle">Register</h2>
+<div class="login">
+	<form asp-controller="Home" asp-action="Register" method="post">
+		<div>
+			<div><label asp-for="UserName">Username</label></div>
+			<div><input asp-for="UserName" id="Username"></input>
+				@if (ViewBag.UserExists != null)
+				{
+					<span style="color:red">Username already in use</span>
+				}
+			</div>
+		</div>
+		<div>
+			<div><label asp-for="Password">Password</label></div>
+			<div><input asp-for="Password"></input></div>
+		</div>
+		<div>
+			<input type="hidden" asp-for="AllTimeMoney" value="0"></input>
+			<input type="hidden" asp-for="CurrentMoney" value="0"></input>
+			<button type="submit">Login</button></div>
+	</form>
+</div>

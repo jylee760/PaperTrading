@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hHSpT9RsSoM=",
+  "dgSpecHash": "rN4SgT4Ba2w=",
   "success": true,
-  "projectFilePath": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\PaperTradingApi.csproj",
+  "projectFilePath": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\PaperTrading.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jnlee\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\jnlee\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

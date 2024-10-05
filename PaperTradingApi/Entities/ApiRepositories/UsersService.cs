@@ -1,9 +1,10 @@
 ﻿using PaperTradingApi.Models.DTO;
 using PaperTradingApi.Models;
+using PaperTrading.Models;
 
-namespace PaperTradingApi.Entities
+namespace PaperTrading.Entities.ApiRepositories
 {
-    public class UsersService:IUsersService
+    public class UsersService : IUsersService
     {
         private readonly IUsersRepository _usersRepository;
         public UsersService(IUsersRepository usersRepository) { _usersRepository = usersRepository; }
@@ -38,7 +39,7 @@ namespace PaperTradingApi.Entities
 
         public async Task<List<UserOrderDTO>> GetUserHistory(string Name)
         {
-            List<UserOrders> orders = await _usersRepository.GetUserHistory(Name);
+            List<UserAllOrders> orders = await _usersRepository.GetUserHistory(Name);
             List<UserOrderDTO> orderDTO = new List<UserOrderDTO>();
             foreach (var order in orders)
             {
@@ -65,15 +66,15 @@ namespace PaperTradingApi.Entities
             return newUser.ToUserDetailDTO();
         }
 
-        public async Task<UserOrderDTO> AddUserOrder(String Name, UserOrderDTO orders)
+        public async Task<UserOrderDTO> AddUserOrder(string Name, UserOrderDTO orders)
         {
             if (orders.OrderType == "b")
             {
-                await _usersRepository.AlterUserMoney(Name, orders.Price);
+                await _usersRepository.AlterUserMoney(Name, orders.Price,orders.Amount,orders.StockTicker);
                 var newOrder1 = await _usersRepository.CreateNewOrder(orders.ToUserOrders(Name));
                 return newOrder1.ToUserOrderDTO();
             }
-            await _usersRepository.AlterUserMoney(Name, -orders.Price);
+            await _usersRepository.AlterUserMoney(Name, -orders.Price,orders.Amount,orders.StockTicker);
             var newOrder = await _usersRepository.CreateNewOrder(orders.ToUserOrders(Name));
             return newOrder.ToUserOrderDTO();
         }

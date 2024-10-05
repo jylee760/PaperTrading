@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using PaperTradingApi.Data;
-using PaperTradingApi.Entities;Remove-Item -Recurse -Force .git
+using PaperTrading.Entities.ApiRepositories;
+using PaperTrading.Data;
+using PaperTrading.Entities.MVCRepositories;
+using Microsoft.AspNetCore.Identity;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,14 +14,40 @@ var builder = WebApplication.CreateBuilder(args);
 var externalSettingsFilePath = builder.Configuration.GetValue<string>("ExternalConnectionStrings");
 builder.Configuration.AddJsonFile(externalSettingsFilePath, optional: true, reloadOnChange: true);
 
-builder.Services.AddRazorPages();
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<PersonDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PersonConnectionString"))
     );
+builder.Services.AddDbContext<AuthDBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnectionString"))
+    );
+builder.Services.AddHttpClient();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+builder.Services.AddScoped<IFinnhubService, FinnhubService>();
+builder.Services.AddScoped<IDbService, ApiService>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IUsersService, UsersService>();
-/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("Person")
+    .AddEntityFrameworkStores<AuthDBContext>()
+    .AddDefaultTokenProviders();
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+});
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -32,7 +61,7 @@ builder.Services.AddScoped<IUsersService, UsersService>();
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
 
-    });*/
+    });
 
 var app = builder.Build();
 
@@ -41,12 +70,17 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
 }
+app.UseSession();
 app.UseStaticFiles();
-
-app.MapControllers();
-//app.UseAuthentication();
+app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
-
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllers();
+});
 app.Run();

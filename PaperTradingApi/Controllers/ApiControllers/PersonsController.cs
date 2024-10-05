@@ -1,12 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PaperTradingApi.Entities;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PaperTrading.Entities.ApiRepositories;
 using PaperTradingApi.Models.DTO;
 
-namespace PaperTradingApi.Controllers
+namespace PaperTrading.Controllers.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PersonsController:ControllerBase
+    [Authorize]
+    public class PersonsController : ControllerBase
     {
         private readonly IUsersService _usersService;
         public PersonsController(IUsersService usersService)
@@ -15,7 +17,7 @@ namespace PaperTradingApi.Controllers
         }
         [HttpGet]
         [Route("{name}")]
-        public async Task<IActionResult> GetUser([FromRoute] String name)
+        public async Task<IActionResult> GetUser([FromRoute] string name)
         {
             UserDetailsDTO? person = await _usersService.GetUser(name);
             if (person == null)
@@ -26,7 +28,7 @@ namespace PaperTradingApi.Controllers
         }
         [HttpGet]
         [Route("stock/{name}/{stock}")]
-        public async Task<IActionResult> GetUserStock([FromRoute] String name, [FromRoute] String stock)
+        public async Task<IActionResult> GetUserStock([FromRoute] string name, [FromRoute] string stock)
         {
             StockDetailsDTO? userStock = await _usersService.GetUserStock(name, stock);
             if (userStock == null)
@@ -37,7 +39,7 @@ namespace PaperTradingApi.Controllers
         }
         [HttpGet]
         [Route("order/{name}/{timestamp}")]
-        public async Task<IActionResult> GetUserOrder([FromRoute] String name, [FromRoute] DateTime timestamp)
+        public async Task<IActionResult> GetUserOrder([FromRoute] string name, [FromRoute] DateTime timestamp)
         {
             UserOrderDTO? userOrder = await _usersService.GetUserOrder(name, timestamp);
             if (userOrder == null)
@@ -48,14 +50,14 @@ namespace PaperTradingApi.Controllers
         }
         [HttpGet]
         [Route("history/{name}")]
-        public async Task<IActionResult> GetUserOrderHistory([FromRoute] String name)
+        public async Task<IActionResult> GetUserOrderHistory([FromRoute] string name)
         {
             List<UserOrderDTO> orders = await _usersService.GetUserHistory(name);
             return Ok(orders);
         }
         [HttpGet]
         [Route("allstocks/{name}")]
-        public async Task<IActionResult> GetAllStocks([FromRoute] String name)
+        public async Task<IActionResult> GetAllStocks([FromRoute] string name)
         {
             List<StockDetailsDTO> stocks = await _usersService.GetAllStock(name);
             return Ok(stocks);
@@ -77,7 +79,7 @@ namespace PaperTradingApi.Controllers
         }
         [HttpPost]
         [Route("create/{user}")]
-        public async Task<IActionResult> CreateNewOrder(String user, [FromBody] UserOrderDTO order)
+        public async Task<IActionResult> CreateNewOrder(string user, [FromBody] UserOrderDTO order)
         {
             if (!ModelState.IsValid)
             {
@@ -107,7 +109,7 @@ namespace PaperTradingApi.Controllers
         }
         [HttpPatch]
         [Route("addfunds/{user}")]
-        public async Task<IActionResult> AddFunds(String user, [FromBody] UserDetailsAddFundsDTO dto)
+        public async Task<IActionResult> AddFunds(string user, [FromBody] UserDetailsAddFundsDTO dto)
         {
             if (!ModelState.IsValid)
             {

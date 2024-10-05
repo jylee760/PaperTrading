@@ -1,0 +1,62 @@
+﻿@model OrderDTO
+@if (ViewBag.BadSearch != null)
+{
+	<h1>No stock found</h1>
+}
+else
+{
+	<div class="windowStock">
+		<div class="stockProfile">
+			<a href="@ViewBag.StockProfile.weburl" class="stockT"><h1 class="stockT">@ViewBag.StockProfile.name (@ViewBag.StockProfile.ticker)</h1></a>
+			<img src="@ViewBag.StockProfile.logo" alt="@ViewBag.StockProfile.name Logo"></img>
+		</div>
+		<div class="stockProfile">
+			<ul class="rightDetails">
+				<li>Industry: @ViewBag.StockProfile.finnhubIndustry</li>
+				<li>Market Cap: @Math.Round(ViewBag.StockProfile.marketCapitalization,2)</li>
+				<li>Outstanding Shares:@ViewBag.StockProfile.shareOutstanding</li>
+			</ul>
+			<ul class="rightDetails">
+				<li>Current Price: <p id="Price">@ViewBag.StockQuote.c</p></li>
+				<li>Percent Change: @Math.Round(ViewBag.StockQuote.dp,2)%</li>
+				<li>Today's High: @ViewBag.StockQuote.h</li>
+				<li>Today's Low: @ViewBag.StockQuote.l</li>
+			</ul>
+			<div class="rightDetails">
+				<form asp-controller="Home" asp-action="Order" method="post">
+					<div>
+						<div>
+							<input asp-for="Amount" id="Amount"></input>
+							<span asp-validation-for="Amount" class="validation-message"></span>
+						</div>
+						<input type="hidden" asp-for="StockTicker" value="@ViewBag.StockProfile.ticker" id="stockticker"></input>
+						<input type="hidden" asp-for="Price" value="@ViewBag.StockQuote.c" id="CurrentPrice" class="currentPrice"></input>
+						<input type="hidden" name="MaxAmount" value="0"></input>
+						<input type="hidden" name="money" id="Money" value="@ViewBag.CurrentMoney"></input>
+						<div class="submission">
+							<button class="sub"type="submit"name="OrderType"id="OrderType"value="b"onclick="return validateBuy()">Buy</button>
+						</div>
+					</div>
+				</form>
+				<p>Current money: @ViewBag.CurrentMoney</p>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="FinnhubToken" value="@ViewBag.Token"></input>
+}	
+@section Scripts{
+	<script type="module" src="~/js/SingleStock.js"></script>
+	<script>
+		function validateBuy(){
+			var maxMoney = parseFloat(document.querySelector('#Money').value);
+			var amount = parseFloat(document.querySelector('#Amount').value);
+			var price = parseFloat(document.querySelector('#CurrentPrice').value);
+			if(maxMoney<(amount*price)){
+				alert("Not Enough Funds");
+				return false
+			}
+			return true
+		}
+	</script>
+}
+

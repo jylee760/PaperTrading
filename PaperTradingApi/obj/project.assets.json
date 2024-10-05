@@ -4418,9 +4418,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\PaperTradingApi.csproj",
-      "projectName": "PaperTradingApi",
-      "projectPath": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\PaperTradingApi.csproj",
+      "projectUniqueName": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\PaperTrading.csproj",
+      "projectName": "PaperTrading",
+      "projectPath": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\PaperTrading.csproj",
       "packagesPath": "C:\\Users\\jnlee\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\obj\\",
       "projectStyle": "PackageReference",

@@ -11,7 +11,7 @@ namespace PaperTradingApi.Models.DTO
         [Required]
         public int Amount { get; set; }
         [Required]
-        public decimal Price { get; set; }
+        public decimal Cost { get; set; }
         public StockDetails ToStockDetails()
         {
             return new StockDetails
@@ -19,7 +19,7 @@ namespace PaperTradingApi.Models.DTO
                 UserName = UserName,
                 StockTicker = StockTicker,
                 Amount = Amount,
-                Price = Price
+                Cost = Cost
             };
         }
     }
@@ -32,7 +32,7 @@ namespace PaperTradingApi.Models.DTO
                 UserName = stockDetails.UserName,
                 StockTicker = stockDetails.StockTicker,
                 Amount = stockDetails.Amount,
-                Price = stockDetails.Price
+                Cost = stockDetails.Cost
             };
         }
     }

@@ -1,0 +1,15 @@
+﻿@model UserDetailsAddFundsDTO
+<div>
+	<form asp-controller="Home" asp-action="Add_Funds" method="post">
+		<div class="flex-row">
+			<div>
+				<label asp-for="Amount" class="label"></label>
+			</div>
+			<div class="flex">
+				<input asp-for="Amount"/>
+				<span asp-validation-for="Amount" class="validation-message"></span>
+			</div>
+		</div>
+		<button type="submit">Submit</button>
+	</form>
+</div>

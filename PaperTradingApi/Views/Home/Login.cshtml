@@ -1,0 +1,19 @@
+﻿@model UserLoginDTO
+@{
+	Layout = null;
+}
+<div class="login">
+	<h2>Login</h2>
+	<form asp-controller="Home" asp-action="Login" method="post">
+		<div>
+			<div><label asp-for="UserName">Username</label></div>
+			<div><input asp-for="UserName"></input></div>
+		</div>
+		<div>
+			<div><label asp-for="Password">Password</label></div>
+			<div><input asp-for="Password"></input></div>
+		</div>
+		<div><button type="submit">Login</button></div>
+	</form>
+	<a asp-controller="Home" asp-action="Register" method="get">Register</a>
+</div>

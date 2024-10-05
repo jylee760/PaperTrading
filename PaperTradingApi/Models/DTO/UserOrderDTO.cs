@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PaperTrading.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace PaperTradingApi.Models.DTO
 {
@@ -26,10 +27,33 @@ namespace PaperTradingApi.Models.DTO
                 Price = Price
             };
         }
+        public UserAllOrders ToUserAllOrders(String user)
+        {
+            return new UserAllOrders
+            {
+                UserName = user,
+                Timestamp = Timestamp,
+                OrderType = OrderType,
+                StockTicker = StockTicker,
+                Amount = Amount,
+                Price = Price
+            };
+        }
     }
     public static class UserOrdersExtension
     {
         public static UserOrderDTO ToUserOrderDTO(this UserOrders userOrders)
+        {
+            return new UserOrderDTO
+            {
+                Timestamp = userOrders.Timestamp,
+                OrderType = userOrders.OrderType,
+                StockTicker = userOrders.StockTicker,
+                Amount = userOrders.Amount,
+                Price = userOrders.Price
+            };
+        }
+        public static UserOrderDTO ToUserOrderDTO(this UserAllOrders userOrders)
         {
             return new UserOrderDTO
             {

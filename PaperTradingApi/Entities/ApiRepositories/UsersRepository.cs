@@ -1,10 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Identity;
+using Microsoft.EntityFrameworkCore;
+using PaperTrading.Models;
 using PaperTradingApi.Data;
 using PaperTradingApi.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace PaperTradingApi.Entities
+namespace PaperTrading.Entities.ApiRepositories
 {
-    public class UsersRepository:IUsersRepository
+    public class UsersRepository : IUsersRepository
     {
         private readonly PersonDbContext _db;
         public UsersRepository(PersonDbContext db)
@@ -33,21 +36,55 @@ namespace PaperTradingApi.Entities
             return user;
         }
 
-        public async Task<UserDetails?> AlterUserMoney(string Name, decimal Amount)
+        public async Task<UserDetails?> AlterUserMoney(string Name, decimal Price,int Amount, string StockTicker)
         {
             UserDetails? user = await _db.UserDetail.FindAsync(Name.ToLower());
             if (user == null)
             {
                 return null;
             }
-            user.CurrentMoney -= Amount;
+            user.CurrentMoney -= (Price*Amount);
+            if (Price < 0)
+            {
+                var sold = Amount;
+                var history = await _db.UserOrder.Where(temp => temp.UserName.ToLower() == Name.ToLower() && temp.StockTicker.ToLower() == StockTicker.ToLower() && temp.OrderType.Equals("b")).OrderBy(temp => temp.Timestamp).ToListAsync();
+                var count = 0;
+                while (sold > 0)
+                {
+                    UserOrders order = history[count];
+                    if(order.Amount <= sold)
+                    {
+                        sold -= order.Amount;
+                        _db.UserOrder.Remove(order);
+                    }
+                    else
+                    {
+                        order.Amount -= sold;
+                        break;
+                    }
+                    count += 1;
+                }
+            }
             await _db.SaveChangesAsync();
             return user;
         }
 
         public async Task<UserOrders> CreateNewOrder(UserOrders order)
         {
-            _db.UserOrder.Add(order);
+            UserAllOrders orderTrack = new UserAllOrders
+            {
+                OrderType = order.OrderType,
+                StockTicker = order.StockTicker,
+                Amount = order.Amount,
+                Price = order.Price,
+                Timestamp = order.Timestamp,
+                UserName = order.UserName
+            };
+            if (order.OrderType == "b")
+            {
+                _db.UserOrder.Add(order);
+            }
+            _db.UserAllOrders.Add(orderTrack);
             await _db.SaveChangesAsync();
             return order;
         }
@@ -64,9 +101,9 @@ namespace PaperTradingApi.Entities
             return user;
         }
 
-        public async Task<List<UserOrders>> GetUserHistory(string Name)
+        public async Task<List<UserAllOrders>> GetUserHistory(string Name)
         {
-            List<UserOrders> history = await _db.UserOrder.Where(temp => temp.UserName.ToLower() == Name.ToLower()).OrderBy(temp => temp.Timestamp).ToListAsync();
+            List<UserAllOrders> history = await _db.UserAllOrders.Where(temp => temp.UserName.ToLower() == Name.ToLower()).OrderBy(temp => temp.Timestamp).ToListAsync();
             return history;
         }
 

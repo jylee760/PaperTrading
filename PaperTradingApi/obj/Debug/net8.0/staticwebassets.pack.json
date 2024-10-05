@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\wwwroot\\js\\SingleStock.js",
+      "PackagePath": "staticwebassets\\js\\SingleStock.js"
+    },
+    {
+      "Id": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\wwwroot\\js\\profile.js",
+      "PackagePath": "staticwebassets\\js\\profile.js"
+    },
+    {
+      "Id": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\Users\\jnlee\\source\\repos\\PaperTradingApi\\PaperTradingApi\\wwwroot\\js\\ws.js",
+      "PackagePath": "staticwebassets\\js\\ws.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.PaperTrading.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.PaperTrading.props",
+      "PackagePath": "build\\PaperTrading.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.PaperTrading.props",
+      "PackagePath": "buildMultiTargeting\\PaperTrading.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.PaperTrading.props",
+      "PackagePath": "buildTransitive\\PaperTrading.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,138 @@
+﻿@model OrderDTO
+@{
+	decimal count = 0;
+	foreach(var Stock in ViewBag.Stocks)
+	{
+		count += Stock.Cost;
+	}
+}
+<h1 class="profileTitle">Details</h1>
+<div class="profile">
+	<h2>@ViewBag.UserDetails.UserName</h2>
+	<h3>Starting Liquid Funds: @ViewBag.UserDetails.AllTimeMoney</h3>
+	<h3>Current Liquid Funds: @ViewBag.UserDetails.CurrentMoney</h3>
+	<h3 id="pltag">P/L:<h3 id="pl"></h3><input type="hidden" id="profitPercentage" value="@ViewBag.UserDetails.AllTimeMoney"></input></h3>
+	<input type="hidden" id="CurrentAmountMoney" value="@ViewBag.UserDetails.CurrentMoney"></input>
+	<div class="stockTable2">
+		<table>
+			<thead>
+				<tr>
+					<th>Stock Ticker</th>
+					<th>Amount</th>
+					<th>Purchase Price</th>
+					<th>Current Price</th>
+					<th>Percentage Gain</th>
+					<th>Cost Basis</th>
+					<th>Price</th>
+					<th>Options</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for(int i = 0; i < ViewBag.Stocks.Count; i++)
+				{
+					var Stock = ViewBag.Stocks[i];
+					<div>
+						<tr class="individualStock">
+							<input type="hidden" value="@Stock.Cost" class="stockInfo"></input>
+							<td class="stock-title">@Stock.StockTicker</td>
+							<td>@Stock.Amount</td>
+							<td>@Stock.Cost</td>
+							<td class="individualPrice"></td>
+							<td class="individualPercentage"></td>
+							<td>@(Math.Round((Stock.Cost/Stock.Amount),2))</td>
+							<td>@(Math.Round(ViewBag.QuoteList[Stock.StockTicker],2))</td>
+							<td>
+								<form asp-controller="Home" asp-action="Order" method="post">
+									<div>
+										<div>
+											<input asp-for="Amount"id="Amount-@i"></input>
+											<span asp-validation-for="Amount" class="validation-message"></span>
+										</div>
+										<input type="hidden" asp-for="StockTicker" value="@Stock.StockTicker" class="stockName"></input>
+										<input type="hidden" asp-for="Price" value="@ViewBag.QuoteList[Stock.StockTicker]" id="Price-@i" class="currentPrice"></input>
+										<input type="hidden" name="MaxAmount" id="MaxAmount-@i" value="@Stock.Amount" class="maxAmount"></input>
+										<input type="hidden" name="money" id="Money-@i" value="@ViewBag.UserDetails.CurrentMoney"></input>
+										<div class="submission">
+										<button class="sub" type="submit" name="OrderType" id="OrderType" value="b" onclick="return validateBuy(@i)">Buy</button>
+										<button class="sub" type="submit" name="OrderType" id="OrderType" value="s" onclick="return validateSell(@i)">Sell</button>
+										</div>
+									</div>
+								</form>
+							</td>
+						</tr>
+					</div>
+				}
+			</tbody>
+		</table>
+	</div>
+</div>
+<input type="hidden" id="FinnhubToken" value="@ViewBag.Token"></input>
+@section Scripts{
+	<script>
+		var listStocks = document.querySelectorAll('.stockInfo');
+		var dictStocks = {};
+		var count = 0.0;
+		var currentMoney = document.querySelector('#CurrentAmountMoney');
+		var original = document.querySelector('#profitPercentage');
+		var pl = document.querySelector('#pl');
+		listStocks.forEach(stock => {
+			var priceChanged = stock.parentElement.querySelector('.currentPrice');
+			var amount = stock.parentElement.querySelector('.maxAmount');
+			var name = stock.parentElement.querySelector('.stockName').value;
+			var stockValue = parseFloat(stock.value);
+			count += parseFloat(priceChanged.value) * parseFloat(amount.value);
+			dictStocks[name] = [parseFloat(priceChanged.value) * parseFloat(amount.value), stockValue];
+			var individualPrice = stock.parentElement.querySelector('.individualPrice');
+			var individualPercentage = stock.parentElement.querySelector('.individualPercentage');
+			individualPrice.textContent = dictStocks[name][0].toFixed(2);
+			individualPercentage.textContent = ((dictStocks[name][0] - dictStocks[name][1]) / dictStocks[name][1] * 100).toFixed(2) + "%";
+
+			priceChanged.addEventListener('input', function () {
+				var name = this.parentElement.querySelector('.stockName').value;
+				var amount = this.parentElement.querySelector('.maxAmount');
+				dictStocks[name][0] = parseFloat(this.value) * parseFloat(amount.value);
+				var individualPrice = this.parentElement.parentElement.parentElement.parentElement.querySelector('.individualPrice');
+				var individualPercentage = this.parentElement.parentElement.parentElement.parentElement.querySelector('.individualPercentage');
+				individualPrice.textContent = dictStocks[name][0].toFixed(2);
+				individualPercentage.textContent = ((dictStocks[name][0] - dictStocks[name][1]) / dictStocks[name][1] * 100).toFixed(2) + "%";
+				var count = 0.0;
+				for (let stock in dicStocks) {
+					count += parseFloat(dictStocks[stock][0])
+				}
+				count += parseFloat(CurrentMoney.value)
+				pl.textContent = (count + parseFloat(currentMoney.value)).toFixed(2) + " " + (((parseFloat(count) + parseFloat(CurrentMoney.value)) - parseFloat(original.value)) / parseFloat(original.value) * 100).toFixed(2);
+			});
+		});
+		var calc = (((parseFloat(count) + parseFloat(currentMoney.value)) - original.value) / original.value * 100);
+		if(count!=0){
+			pl.textContent = (count + parseFloat(currentMoney.value)).toFixed(2) + " " + calc.toFixed(2) + "%";
+
+		}
+		else{
+			pl.textContent = (count + parseFloat(currentMoney.value)).toFixed(2) + " " + "--%";
+		}
+	</script>
+	<script type="module" src="~/js/profile.js"></script>
+	<script>
+		function validateBuy(i){
+			var maxMoney = parseFloat(document.querySelector(`#Money-${i}`).value);
+			var amount = parseFloat(document.querySelector(`#Amount-${i}`).value);
+			var price = parseFloat(document.querySelector(`#Price-${i}`).value);
+			if(maxMoney<amount*price){
+				alert("Not Enough Funds");
+				return false;
+			}
+			return true;
+		}
+		function validateSell(i){
+			var maxAmount = parseFloat(document.querySelector(`#MaxAmount-${i}`).value);
+			var amount = parseFloat(document.querySelector(`#Amount-${i}`).value);
+			var price = parseFloat(document.querySelector(`#Price-${i}`).value);
+			if (maxAmount < amount) {
+				alert("Not Enough Stocks");
+				return false;
+			}
+			return true;
+		}
+	</script>
+}

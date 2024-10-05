@@ -141,3 +141,4 @@ C:\Users\jnlee\source\repos\PaperTradingApi\PaperTradingApi\obj\Debug\net8.0\ref
 C:\Users\jnlee\source\repos\PaperTradingApi\PaperTradingApi\obj\Debug\net8.0\PaperTradingApi.pdb
 C:\Users\jnlee\source\repos\PaperTradingApi\PaperTradingApi\obj\Debug\net8.0\PaperTradingApi.genruntimeconfig.cache
 C:\Users\jnlee\source\repos\PaperTradingApi\PaperTradingApi\obj\Debug\net8.0\ref\PaperTradingApi.dll
+C:\Users\jnlee\source\repos\PaperTradingApi\PaperTradingApi\obj\Debug\net8.0\PaperTradingApi.sourcelink.json

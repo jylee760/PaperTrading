@@ -22,6 +22,33 @@ namespace PaperTradingApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("PaperTrading.Models.UserAllOrders", b =>
+                {
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OrderType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("StockTicker")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserName", "Timestamp");
+
+                    b.ToTable("UserAllOrders");
+                });
+
             modelBuilder.Entity("PaperTradingApi.Models.StockDetails", b =>
                 {
                     b.Property<int>("Amount")
@@ -88,6 +115,17 @@ namespace PaperTradingApi.Migrations
                     b.HasKey("UserName", "Timestamp");
 
                     b.ToTable("UserOrder");
+                });
+
+            modelBuilder.Entity("PaperTrading.Models.UserAllOrders", b =>
+                {
+                    b.HasOne("PaperTradingApi.Models.UserDetails", "User")
+                        .WithMany()
+                        .HasForeignKey("UserName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PaperTradingApi.Models.UserOrders", b =>
