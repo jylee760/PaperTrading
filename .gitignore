@@ -1,0 +1,14 @@
+.vs/
+bin/
+obj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore logs
+*.log
+*.idea
+# Ignore build artifacts
+dist/
+build/
